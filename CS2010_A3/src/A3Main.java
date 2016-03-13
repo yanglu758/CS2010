@@ -3,8 +3,8 @@
  * 
  * Please put your name in all of your .java files
  * 
- * YOUR NAME: 
- * YOUR MATRICULATION #: 
+ * YOUR NAME: Lu Yang
+ * YOUR MATRICULATION #: A0130684H
  * 
  * COMMENTS:
  * You are not allowed to change any existing codes for reading and writing. You
@@ -16,7 +16,7 @@
  */
 
 import java.util.Scanner;
-
+import Graph.*;
 
 public class A3Main {
     
@@ -27,6 +27,8 @@ public class A3Main {
         /*
          * Your code: read and parse the file "countries_borders.dat"
         */
+        In in = new In("countries_borders.dat");
+        
         
         boolean exit = false;
         String menuInfo = 

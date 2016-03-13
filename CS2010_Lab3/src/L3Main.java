@@ -3,8 +3,8 @@
  * 
  * Please put your name in all of your .java files
  * 
- * YOUR NAME: 
- * YOUR MATRICULATION #: 
+ * YOUR NAME: Lu Yang
+ * YOUR MATRICULATION #: A0130684H
  * 
  * COMMENTS:
  * You are not allowed to change any existing codes for reading and writing. You
@@ -26,35 +26,65 @@ public class L3Main {
          * read text file and build adjacency list graph (AdjListGraph.java) 
          * and adjacency matrix graph (AdjMatrixGraph.java)
         */
-        AdjListGraph adjListGraph = null;
+    	In in;
+    	String filename = "./data/sample.txt";
+    	
+    	AdjListGraph adjListGraph = null;
         AdjMatrixGraph adjMatGraph = null;
+    	
+    	try {
+    		in = new In(filename);
+    		adjListGraph = new AdjListGraph(in);
+    		in.close();
+    		
+    		in = new In(filename);
+    		adjMatGraph = new AdjMatrixGraph(in);
+    		in.close();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+        
         
         
         /*
          * Step 2
          * get the size of graph of each representation
-         *    AdjListGraph.java: adj
+         *    AdjListGraph.java: dadj
          *    AdjMatrixGraph.java: adj
 		 * Please use adjListGraph.sizeOfGraph() to get the memory usage of the graph with list implementation. 
 		 * Please use adjMatGraph.sizeOfGraph() to get the memory usage of the graph with matrix implementation. 
         */
-                
-        System.out.format("1. Number of vertices = %d \n");
-        System.out.format("2. Number of edges = %d \n");
+    	/***********************************************************************************************/
+    	int nVertices = adjListGraph.V();
+    	int nEdges = adjListGraph.E();
+    	int memEdges = adjListGraph.getMemEdges();
+    	int memTotal = adjListGraph.sizeOfGraph();
+    	double efficiency = (double) memEdges / memTotal * 100;
+    	
+        System.out.format("1. Number of vertices = %d \n", nVertices);
+        System.out.format("2. Number of edges = %d \n", nEdges);
         System.out.format("3. Output of the graph using adjacency list:");
-        System.out.format("4. Adjacency list\n (a) Memory needed to record edges = %d\n");
-        System.out.format(" (b) Total amount of memory used  = %d\n");
-        System.out.format(" (c) Efficiency  = %f\n");
-        System.out.format("5. Output of the graph using matrix:");
-        System.out.format("6. Adjacency matrix\n (a) Memory needed to record edges = %d\n");
-        System.out.format(" (b) Total amount of memory used  = %d\n");
-        System.out.format(" (c) Efficiency  = %f\n");
-        System.out.format("Additional task: Efficient Adjacency matrix\n (a) Memory needed to record edges = %d\n");
-        System.out.format(" (b) Total amount of memory used  = %d\n");
-        System.out.format(" (c) Efficiency  = %f\n");
+        adjListGraph.print();
+        System.out.format("4. Adjacency list\n (a) Memory needed to record edges = %d\n", memEdges);
+        System.out.format(" (b) Total amount of memory used  = %d\n", memTotal);
+        System.out.format(" (c) Efficiency  = %f\n", efficiency);
+        /***********************************************************************************************/
         
-    
-    
+        memEdges = adjMatGraph.getMemEdges();
+        memTotal = adjMatGraph.sizeOfGraph();
+        efficiency = (double) memEdges / memTotal * 100;
+        
+        System.out.format("5. Output of the graph using matrix:" + adjMatGraph);
+        adjMatGraph.print();
+        System.out.format("6. Adjacency matrix\n (a) Memory needed to record edges = %d\n", memEdges);
+        System.out.format(" (b) Total amount of memory used  = %d\n", memTotal);
+        System.out.format(" (c) Efficiency  = %f\n", efficiency);
+        /***********************************************************************************************/
+        
+        System.out.format("Additional task: Efficient Adjacency matrix\n (a) Memory needed to record edges = %d\n", memEdges);
+        System.out.format(" (b) Total amount of memory used  = %d\n", memTotal);
+        System.out.format(" (c) Efficiency  = %f\n", efficiency);
+        /***********************************************************************************************/
     }
     
 }

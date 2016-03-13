@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Iterator;
+package Graph;
 
 /******************************************************************************
  *  Compilation:  javac Graph.java        
@@ -37,7 +36,7 @@ import java.util.Iterator;
 
 
 /**
- *  The <tt>AdjListGraph</tt> class represents an undirected graph of vertices
+ *  The <tt>Graph</tt> class represents an undirected graph of vertices
  *  named 0 through <em>V</em> - 1.
  *  It supports the following two primary operations: add an edge to the graph,
  *  iterate over all of the vertices adjacent to a vertex. It also provides
@@ -56,12 +55,13 @@ import java.util.Iterator;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public class AdjListGraph {
+public class Graph {
+	
     private static final String NEWLINE = System.getProperty("line.separator");
 
     private final int V;
     private int E;
-    private Bag<Integer>[] adj;
+    private Bag<Integer>[] adj; // Simple LL datastructure
     
     /**
      * Initializes an empty graph with <tt>V</tt> vertices and 0 edges.
@@ -70,7 +70,7 @@ public class AdjListGraph {
      * @param  V number of vertices
      * @throws IllegalArgumentException if <tt>V</tt> < 0
      */
-    public AdjListGraph(int V) {
+    public Graph(int V) {
         if (V < 0) throw new IllegalArgumentException("Number of vertices must be nonnegative");
         this.V = V;
         this.E = 0;
@@ -90,7 +90,7 @@ public class AdjListGraph {
      * @throws IndexOutOfBoundsException if the endpoints of any edge are not in prescribed range
      * @throws IllegalArgumentException if the number of vertices or edges is negative
      */
-    public AdjListGraph(In in) {
+    public Graph(In in) {
         this(in.readInt());
         int E = in.readInt();
         if (E < 0) throw new IllegalArgumentException("Number of edges must be nonnegative");
@@ -100,18 +100,17 @@ public class AdjListGraph {
             addEdge(v, w);
         }
     }
-    
 
     /**
      * Initializes a new graph that is a deep copy of <tt>G</tt>.
      *
      * @param  G the graph to copy
      */
-    public AdjListGraph(AdjListGraph G) {
+    public Graph(Graph G) {
         this(G.V());
         this.E = G.E();
         for (int v = 0; v < G.V(); v++) {
-            // reverse so that adjacency list is in same order as original
+            // reverse so that adjacency list is in same order as original read from File
             Stack<Integer> reverse = new Stack<Integer>();
             for (int w : G.adj[v]) {
                 reverse.push(w);
@@ -140,29 +139,6 @@ public class AdjListGraph {
         return E;
     }
 
-    /**
-     * Returns the size of this graph.
-     *
-     * @return the size of this graph.
-     */
-    public int sizeOfGraph() {
-		int n = 0;
-		for (int i=0; i<V; i++) {
-			Iterator<Integer> arr = adj[i].iterator();
-			while (arr.hasNext()) {
-    			arr.next();
-    			n++;
-    		}
-		}
-		int memRef = n * 8;
-		int memInt = n * 4;
-		return memRef + memInt;
-    }
-    
-    public int getMemEdges() {
-    	return 4 * E;
-    }
-    
     // throw an IndexOutOfBoundsException unless 0 <= v < V
     private void validateVertex(int v) {
         if (v < 0 || v >= V)
@@ -208,18 +184,62 @@ public class AdjListGraph {
         validateVertex(v);
         return adj[v].size();
     }
-    
-    public void print() {
-    	System.out.println();
-    	System.out.println(V + " vertices, " + E + " edges");
-    	for (int i=0; i<V; i++) {
-    		String output = i + ": ";
-    		Iterator<Integer> arr = adj[i].iterator();
-    		while (arr.hasNext()) {
-    			output += arr.next() + " ";
-    		}
-    		System.out.println(output);
-    	}
+
+
+    /**
+     * Returns a string representation of this graph.
+     *
+     * @return the number of vertices <em>V</em>, followed by the number of edges <em>E</em>,
+     *         followed by the <em>V</em> adjacency lists
+     */
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(V + " vertices, " + E + " edges " + NEWLINE);
+        for (int v = 0; v < V; v++) {
+            s.append(v + ": ");
+            for (int w : adj[v]) {
+                s.append(w + " ");
+            }
+            s.append(NEWLINE);
+        }
+        return s.toString();
     }
-    
+
+
+    /**
+     * Unit tests the <tt>Graph</tt> data type.
+     */
+    public static void main(String[] args) {
+    	
+    	String graphFile1 = "tinyG.txt";
+    	String graphFile2 = "mediumG.txt";
+    	
+        In in = new In(graphFile1);
+        Graph G = new Graph(in);
+        StdOut.println(G);
+    }
+
 }
+
+/******************************************************************************
+ *  Copyright 2002-2015, Robert Sedgewick and Kevin Wayne.
+ *
+ *  This file is part of algs4.jar, which accompanies the textbook *
+ *      Algorithms, 4th edition by Robert Sedgewick and Kevin Wayne,
+ *      Addison-Wesley Professional, 2011, ISBN 0-321-57351-X.
+ *      http://algs4.cs.princeton.edu
+ *
+ *
+ *  algs4.jar is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  algs4.jar is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with algs4.jar.  If not, see http://www.gnu.org/licenses.
+ ******************************************************************************/

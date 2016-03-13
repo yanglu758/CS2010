@@ -90,8 +90,7 @@ public class AdjMatrixGraph {
      * @return the size of this graph.
      */
     public int sizeOfGraph() {
-			//YOUR CODE HERE
-		return 0;
+    	return V * V;
     }
     // support iteration over graph vertices
     private class AdjIterator implements Iterator<Integer>, Iterable<Integer> {
@@ -124,6 +123,23 @@ public class AdjMatrixGraph {
         public void remove()  {
             throw new UnsupportedOperationException();
         }
-    }   
-
+    }
+    
+    public void print() {
+    	System.out.println();
+    	System.out.println(V + " vertices, " + E + " edges");
+    	for (int i=0; i<adj.length; i++) {
+    		String input =  i + ":";
+    		for (int j=0; j<adj[i].length; j++) {
+    			if (adj[i][j]) {
+    				input += " " + j;
+    			}
+    		}
+    		System.out.println(input);
+    	}
+    }
+    
+    public int getMemEdges() {
+    	return E;
+    }
 }
