@@ -90,7 +90,7 @@ public class AdjMatrixGraph {
      * @return the size of this graph.
      */
     public int sizeOfGraph() {
-    	return V * V;
+    	return V * V / 2;
     }
     // support iteration over graph vertices
     private class AdjIterator implements Iterator<Integer>, Iterable<Integer> {
@@ -140,6 +140,6 @@ public class AdjMatrixGraph {
     }
     
     public int getMemEdges() {
-    	return E;
+    	return E / 2;
     }
 }

@@ -27,10 +27,11 @@ public class L3Main {
          * and adjacency matrix graph (AdjMatrixGraph.java)
         */
     	In in;
-    	String filename = "./data/sample.txt";
+    	String filename = "./data/g1.txt";
     	
     	AdjListGraph adjListGraph = null;
         AdjMatrixGraph adjMatGraph = null;
+        AdjMatrixEfficient adjMatEfficient = null;
     	
     	try {
     		in = new In(filename);
@@ -40,6 +41,11 @@ public class L3Main {
     		in = new In(filename);
     		adjMatGraph = new AdjMatrixGraph(in);
     		in.close();
+    		
+    		in = new In(filename);
+    		adjMatEfficient = new AdjMatrixEfficient(in);
+    		in.close();
+    		
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -64,7 +70,6 @@ public class L3Main {
         System.out.format("1. Number of vertices = %d \n", nVertices);
         System.out.format("2. Number of edges = %d \n", nEdges);
         System.out.format("3. Output of the graph using adjacency list:");
-        adjListGraph.print();
         System.out.format("4. Adjacency list\n (a) Memory needed to record edges = %d\n", memEdges);
         System.out.format(" (b) Total amount of memory used  = %d\n", memTotal);
         System.out.format(" (c) Efficiency  = %f\n", efficiency);
@@ -75,15 +80,18 @@ public class L3Main {
         efficiency = (double) memEdges / memTotal * 100;
         
         System.out.format("5. Output of the graph using matrix:" + adjMatGraph);
-        adjMatGraph.print();
         System.out.format("6. Adjacency matrix\n (a) Memory needed to record edges = %d\n", memEdges);
         System.out.format(" (b) Total amount of memory used  = %d\n", memTotal);
         System.out.format(" (c) Efficiency  = %f\n", efficiency);
         /***********************************************************************************************/
         
+        memEdges = adjMatEfficient.getMemEdges();
+        memTotal = adjMatEfficient.sizeOfGraph();
+        efficiency = (double) memEdges / memTotal * 100;
         System.out.format("Additional task: Efficient Adjacency matrix\n (a) Memory needed to record edges = %d\n", memEdges);
         System.out.format(" (b) Total amount of memory used  = %d\n", memTotal);
         System.out.format(" (c) Efficiency  = %f\n", efficiency);
+        adjMatEfficient.print();
         /***********************************************************************************************/
     }
     
