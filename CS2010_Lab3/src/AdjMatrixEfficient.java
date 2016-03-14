@@ -70,8 +70,8 @@ public class AdjMatrixEfficient {
 
 	// add undirected edge v-w
 	public void addEdge(int v, int w) {
-		E++;
-		if (v<w) {
+		this.E++;
+		if (v>w) {
 			adj[v][w] = true;
 		}
 		else {
@@ -95,7 +95,7 @@ public class AdjMatrixEfficient {
 	 * @return the size of this graph.
 	 */
 	public int sizeOfGraph() {
-		return V * V;
+		return E * 1;
 	}
 	// support iteration over graph vertices
 	private class AdjIterator implements Iterator<Integer>, Iterable<Integer> {
@@ -131,7 +131,6 @@ public class AdjMatrixEfficient {
 	}
 
 	public void print() {
-		System.out.println();
 		System.out.println(V + " vertices, " + E + " edges");
 		for (int i=0; i<adj.length; i++) {
 			String input =  i + ":";
@@ -145,6 +144,6 @@ public class AdjMatrixEfficient {
 	}
 
 	public int getMemEdges() {
-		return E;
+		return E*1;
 	}
 }
