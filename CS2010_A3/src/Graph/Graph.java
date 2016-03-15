@@ -157,7 +157,6 @@ public class Graph {
         validateVertex(w);
         E++;
         adj[v].add(w);
-        adj[w].add(v);
     }
 
 

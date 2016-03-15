@@ -17,10 +17,14 @@
 
 import java.io.*;
 import java.util.*;
+
 import Graph.*;
+import Graph.Stack;
 
 public class A3Main {
-
+	private static TreeMap<Integer, String> tree1;
+	private static TreeMap<String, Integer> tree2;
+	
 	public static void main(String[] args) {
 
 		Scanner scanner = new Scanner(System.in);  // for reading from console
@@ -47,12 +51,25 @@ public class A3Main {
 			System.out.println("================================================");
 
 			switch (menu) {
+			/*************************************TASK 3.1*************************************/
 			case 1:
 				// List all countries and bordering countries
-
-				System.out.println();
+				for (int i=0; i<graph.V(); i++) {
+					String origin = tree1.get(i);
+					String output = origin + " (" + i + "): ";
+					Bag<Integer> adj =  (Bag<Integer>) graph.adj(i);
+					int count =0;
+					for (Integer j: adj) {
+						String country = tree1.get(j);
+						output += (country + " (" + j + ")");
+						if (count!=(adj.size()-1)) output += ", ";
+						count++;
+					}
+					System.out.println(output);
+				}
 				break;
-
+				
+			/*************************************TASK 3.2*************************************/
 			case 2: // find shortest path
 				System.out.println(">>> 3.1(b) Find shortest path");
 				while (true) {
@@ -67,11 +84,25 @@ public class A3Main {
 					 * ** For requirement 3.6, you can compute and print 
 					 * in this part
 					 */
-
+					BreadthFirstPaths bfs = new BreadthFirstPaths(graph, source);
+					if (bfs.hasPathTo(destination)) {
+						Stack stack = (Stack) bfs.pathTo(destination);
+						int size = stack.size();
+						String output = size + " : ";
+						while (!stack.isEmpty()) {
+							int id = (int) stack.pop();
+							String country = tree1.get(id);
+							output += country + "(" + id + ")" + " -> ";
+						}
+						output = output.substring(0, output.length()-4);
+						System.out.println(output);
+					}
+					else System.out.println("no path");
 				} // end while
 				System.out.println();
 				break;
-
+			
+			/*************************************TASK 3.3*************************************/
 			case 3:
 				System.out.println("\n>>> 3.2 List all countries with N neighbors");
 				while (true) {
@@ -151,34 +182,35 @@ public class A3Main {
 	} // public static void main(String[] args)
 
 	public static Graph parse(String filename) {
-		TreeMap<Integer, String> tree1 = new TreeMap<Integer, String>();
-		TreeMap<String, Integer> tree2 = new TreeMap<String, Integer>();
+		tree1 = new TreeMap<Integer, String>();
+		tree2 = new TreeMap<String, Integer>();
 		BufferedReader br;
+		Graph graph = null;
 		int id = 0;
 		
 		try {
 			br = new BufferedReader(new FileReader(filename));
-			String element = br.readLine().trim();
+			String element = br.readLine();
 			int v = 0;
 			while (element!=null) {
-				System.out.println(element);
-				String[] temp = element.split(">>");
-				String origin = temp[0];
+				String[] temp = element.trim().split(">>");
+				String origin = temp[0].trim();
 				tree1.put(v, origin);
 				tree2.put(origin, v);
-				element = br.readLine().trim();
+				element = br.readLine();
 				v++;
 			}
 			System.out.println("parse/v: " + v);
 			br.close();
 			
 			int current = 0;
-			Graph graph = new Graph(v);
+			graph = new Graph(v);
 			br = new BufferedReader(new FileReader(filename));
-			element = br.readLine().trim();
+			element = br.readLine();
 			while (element!=null) {
-				String[] temp = element.split(">>");
-				String[] neighbours = temp[1].split(";");
+				System.out.println("parse/element: " + element);
+				String[] temp = element.trim().split(">>");
+				String[] neighbours = temp[1].trim().split(";"); // neighour countries
 				
 				// the country has neighbours
 				for (int i=0; i<neighbours.length; i++) {
@@ -186,8 +218,10 @@ public class A3Main {
 					int length = neighbourStr.length;
 					String country = neighbourStr[0].trim();
 					double distance = 0;
-					int key = tree2.get(distance);
-					graph.addEdge(current, key);
+					System.out.println("parse/country: " + country);
+					int neighbour = tree2.get(country);
+					graph.addEdge(current, neighbour);
+					System.out.println(current + "-" + neighbour);
 					
 					// there is a border between these two countries
 					// there is a double distance value to parse
@@ -195,13 +229,10 @@ public class A3Main {
 						String distanceStr = neighbourStr[1].trim();
 						String[] distanceStrTemp = distanceStr.split(" ");
 						distanceStrTemp[0] = distanceStrTemp[0].replaceAll(",", "");
-						System.out.println(distanceStrTemp[0]);
 						distance = Double.parseDouble(distanceStrTemp[0]);
 					}
-					graph.addEdge(v, w);
 				}
-				System.out.println("parse/origin: " + origin );
-				element = br.readLine().trim();
+				element = br.readLine();
 				current++;
 			}
 			br.close();
@@ -209,6 +240,6 @@ public class A3Main {
 			e.printStackTrace();
 		}
 
-		return null;
+		return graph;
 	}
 } // class A3Main
