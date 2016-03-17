@@ -1,5 +1,7 @@
 package Graph;
 
+import java.util.ArrayList;
+
 /******************************************************************************
  *  Compilation:  javac BreadthFirstPaths.java
  *  Execution:    java BreadthFirstPaths G s
@@ -60,6 +62,9 @@ public class BreadthFirstPaths {
     private boolean[] marked;  // marked[v] = is there an s-v path
     private int[] edgeTo;      // edgeTo[v] = previous edge on shortest s-v path
     private int[] distTo;      // distTo[v] = number of edges shortest s-v path
+    private ArrayList<Integer> blocked;
+    Graph G;
+    int s;
 
     /**
      * Computes the shortest path between the source vertex <tt>s</tt>
@@ -68,11 +73,26 @@ public class BreadthFirstPaths {
      * @param s the source vertex
      */
     public BreadthFirstPaths(Graph G, int s) {
+    	this.G = G;
+    	this.s = s;
+    	
+    	blocked = new ArrayList<Integer>();
         marked = new boolean[G.V()];
         distTo = new int[G.V()];
         edgeTo = new int[G.V()];
         bfs(G, s);
-
+        assert check(G, s);
+    }
+    
+    public void setBlockedCountries(int toBlock) {
+    	blocked.add(toBlock);
+    	
+    	marked = new boolean[G.V()];
+        distTo = new int[G.V()];
+        edgeTo = new int[G.V()];
+        marked[toBlock] = true;
+        distTo[toBlock] = INFINITY;
+        bfs(G, s);
         assert check(G, s);
     }
 
@@ -257,6 +277,5 @@ public class BreadthFirstPaths {
 
         }
     }
-
 
 }

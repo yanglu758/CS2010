@@ -1,5 +1,7 @@
 package Graph;
 
+import java.util.ArrayList;
+
 /******************************************************************************
  *  Compilation:  javac Graph.java        
  *  Execution:    java Graph input.txt
@@ -59,8 +61,9 @@ public class Graph {
 	
     private static final String NEWLINE = System.getProperty("line.separator");
 
-    private final int V;
+    private int V;
     private int E;
+    private ArrayList<Double> lengthEdge;
     private Bag<Integer>[] adj; // Simple LL datastructure
     
     /**
@@ -159,7 +162,6 @@ public class Graph {
         adj[v].add(w);
     }
 
-
     /**
      * Returns the vertices adjacent to vertex <tt>v</tt>.
      *
@@ -203,8 +205,7 @@ public class Graph {
         }
         return s.toString();
     }
-
-
+    
     /**
      * Unit tests the <tt>Graph</tt> data type.
      */
