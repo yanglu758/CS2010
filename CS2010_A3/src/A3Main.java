@@ -124,7 +124,7 @@ public class A3Main {
 
 					double pathBorder = 0;
 					String output = "";
-					if (bfs.hasPathTo(destination)) {
+					if (!blocked.contains(source) && !blocked.contains(destination) && bfs.hasPathTo(destination)) {
 						Stack stack = (Stack) bfs.pathTo(destination);
 						int size = stack.size();
 						output = size + " : ";
@@ -201,7 +201,7 @@ public class A3Main {
 					 * You are allowed to jump to other part of switch branch
 					 * to help you finish this part
 					 */
-					blocked.add(toBlock);
+					if (!blocked.contains(toBlock)) blocked.add(toBlock);
 				} // end while
 				System.out.println();
 				break;
@@ -238,6 +238,7 @@ public class A3Main {
 						country = maxHeap.poll();
 					}
 				} // end while
+				System.out.println();
 				break;
 
 			case 6:
