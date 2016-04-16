@@ -59,7 +59,6 @@ public class DijkstraUndirectedSP {
     private double[] distTo;          // distTo[v] = distance  of shortest s->v path
     private Edge[] edgeTo;            // edgeTo[v] = last edge on shortest s->v path
     private IndexMinPQ<Double> pq;    // priority queue of vertices
-    private UF uf;
 
     /**
      * Computes a shortest-paths tree from the source vertex <tt>s</tt> to every
@@ -121,8 +120,6 @@ public class DijkstraUndirectedSP {
         	int source = stack.pop();
         	pq.insert(source, distTo[source]);
         }
-        
-        uf = new UF(G.V());
         
         while (!pq.isEmpty()) {
         	int v = pq.delMin();
