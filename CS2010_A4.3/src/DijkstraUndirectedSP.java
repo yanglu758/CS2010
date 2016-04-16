@@ -59,6 +59,7 @@ public class DijkstraUndirectedSP {
     private double[] distTo;          // distTo[v] = distance  of shortest s->v path
     private Edge[] edgeTo;            // edgeTo[v] = last edge on shortest s->v path
     private IndexMinPQ<Double> pq;    // priority queue of vertices
+    private UF uf;
 
     /**
      * Computes a shortest-paths tree from the source vertex <tt>s</tt> to every
@@ -110,9 +111,19 @@ public class DijkstraUndirectedSP {
         }
         
         pq = new IndexMinPQ<Double>(G.V());
+        
+        // reverse iterables
+        Stack<Integer> stack = new Stack<Integer>();
         for (Integer source: sources) {
+        	stack.push(source);
+        }
+        while (!stack.isEmpty()) {
+        	int source = stack.pop();
         	pq.insert(source, distTo[source]);
         }
+        
+        uf = new UF(G.V());
+        
         while (!pq.isEmpty()) {
         	int v = pq.delMin();
         	for (Edge e: G.adj(v))
@@ -123,6 +134,14 @@ public class DijkstraUndirectedSP {
     // relax edge e and update pq if changed
     private void relax(Edge e, int v) {
         int w = e.other(v);
+        if (distTo[w] == distTo[v] + e.weight()) {
+        	int rootW = this.dest(w);
+        	int rootV = this.dest(v);
+        	if (rootV>rootW) {
+        		distTo[w] = distTo[v] + e.weight();
+        		edgeTo[w] = e;
+        	}
+        }
         if (distTo[w] > distTo[v] + e.weight()) {
             distTo[w] = distTo[v] + e.weight();
             edgeTo[w] = e;

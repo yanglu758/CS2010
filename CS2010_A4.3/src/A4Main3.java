@@ -71,11 +71,12 @@ public class A4Main3{
         //Printing the result for each hospital
         for (int hospital: hospitals) { 
         	LinkedList<Integer> housesUnderHospital = hospitalsList[hospital];
-            System.out.printf("Following %d houses visit hospital %d:\n", housesUnderHospital.size(), hospital);
+            System.out.printf("Following %d houses visit hospital %d:\n\n", housesUnderHospital.size(), hospital);
             for (int house: housesUnderHospital) {
-            	double distance = sp.distTo(house);
-            	System.out.printf("House %d visit with shortest distance %.4f\n", house, distance);
+            	int distance = (int) sp.distTo(house);
+            	System.out.printf("House %d visit with shortest distance %d\n", house, distance);
             }
+            System.out.println();
         }
     }
 
